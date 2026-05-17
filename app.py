@@ -107,7 +107,7 @@ HTML = """
 <body>
  
 <nav class="nav">
-    <div class="logo">pill<span>arity</span></div>
+    <a href="/" style="text-decoration:none"><div class="logo">pill<span>arity</span></div></a>
     <div>
         <a href="https://samperrin27.github.io/pillarity#how">How it works</a>
         <a href="https://samperrin27.github.io/pillarity#findings">Findings</a>
