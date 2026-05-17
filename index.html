@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pillarity — Find identical medicines for less</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; color: #333; background: #f5f7fa; }
+
+        .nav {
+            background: #1a3a5c;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav .logo { color: white; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+        .nav .logo span { color: #5bc8f5; }
+        .nav a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 14px; margin-left: 24px; }
+        .nav a:hover { color: white; }
+
+        .hero {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2a6496 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+        }
+        .hero h1 { font-size: 42px; font-weight: 700; margin-bottom: 16px; line-height: 1.2; }
+        .hero h1 span { color: #5bc8f5; }
+        .hero p { font-size: 18px; opacity: 0.9; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .stats {
+            background: white;
+            padding: 32px 40px;
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .stat { text-align: center; }
+        .stat .number { font-size: 32px; font-weight: 700; color: #1a3a5c; }
+        .stat .label { font-size: 13px; color: #888; margin-top: 4px; }
+
+        .section { padding: 60px 40px; max-width: 1000px; margin: 0 auto; }
+        .section-title { font-size: 26px; font-weight: 700; color: #1a3a5c; margin-bottom: 8px; }
+        .section-sub { font-size: 15px; color: #666; margin-bottom: 36px; }
+
+        .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .how-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 28px 24px;
+            text-align: center;
+        }
+        .how-card .icon { font-size: 36px; margin-bottom: 16px; }
+        .how-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #1a3a5c; }
+        .how-card p { font-size: 14px; color: #666; line-height: 1.6; }
+
+        .finding {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid #28a745;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+        .finding .badge {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        .finding .vs-row {
+            display: grid;
+            grid-template-columns: 1fr 40px 1fr;
+            gap: 12px;
+            align-items: center;
+        }
+        .finding .product { background: #f8f9fa; border-radius: 6px; padding: 10px 14px; }
+        .finding .product .name { font-size: 14px; font-weight: 600; }
+        .finding .product .mfr { font-size: 12px; color: #666; margin-top: 2px; }
+        .finding .product .pl { font-size: 11px; color: #999; margin-top: 4px; }
+        .vs-circle {
+            width: 36px; height: 36px;
+            background: #1a3a5c;
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 600;
+            margin: 0 auto;
+        }
+        .finding .evidence {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        .about {
+            background: #1a3a5c;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+        .about h2 { font-size: 26px; font-weight: 700; margin-bottom: 16px; }
+        .about p { font-size: 15px; opacity: 0.85; max-width: 600px; margin: 0 auto 12px; line-height: 1.7; }
+
+        .privacy { padding: 60px 40px; max-width: 800px; margin: 0 auto; }
+        .privacy h2 { font-size: 22px; font-weight: 700; color: #1a3a5c; margin-bottom: 20px; }
+        .privacy h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+        .privacy p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 8px; }
+
+        .footer {
+            background: #111;
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 24px 40px;
+            font-size: 13px;
+        }
+        .footer a { color: rgba(255,255,255,0.6); text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            .how-grid { grid-template-columns: 1fr; }
+            .stats { gap: 30px; flex-wrap: wrap; }
+            .hero h1 { font-size: 28px; }
+            .finding .vs-row { grid-template-columns: 1fr; }
+            .vs-circle { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+    <div class="logo">pill<span>arity</span></div>
+    <div>
+        <a href="#how">How it works</a>
+        <a href="#findings">Findings</a>
+        <a href="#about">About</a>
+        <a href="#privacy">Privacy</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-badge">🇬🇧 UK Medicines Database</div>
+    <h1>Stop overpaying for<br><span>identical medicines</span></h1>
+    <p>Pillarity compares the formulations of UK medicines using official regulatory data, so you can see when a branded product is identical to a cheaper alternative.</p>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+    <div class="stat">
+        <div class="number">162</div>
+        <div class="label">Products analysed</div>
+    </div>
+    <div class="stat">
+        <div class="number">3</div>
+        <div class="label">Identical pairs found</div>
+    </div>
+    <div class="stat">
+        <div class="number">EMC</div>
+        <div class="label">Official data source</div>
+    </div>
+    <div class="stat">
+        <div class="number">100%</div>
+        <div class="label">Free to use</div>
+    </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section" id="how">
+    <div class="section-title">How it works</div>
+    <div class="section-sub">Three steps to finding identical medicines</div>
+    <div class="how-grid">
+        <div class="how-card">
+            <div class="icon">📋</div>
+            <h3>1. Regulatory data</h3>
+            <p>We pull formulation data for every licensed UK medicine from the Electronic Medicines Compendium (EMC) — the official source used by pharmacists and doctors.</p>
+        </div>
+        <div class="how-card">
+            <div class="icon">🔬</div>
+            <h3>2. Formula matching</h3>
+            <p>We compare products using a 7-tier hierarchy — from PL code matching (100% identical) down to excipient analysis — to identify when two products are the same formula.</p>
+        </div>
+        <div class="how-card">
+            <div class="icon">💊</div>
+            <h3>3. Price comparison</h3>
+            <p>We show you where identical products are sold at different prices across UK retailers, so you can make an informed choice without compromising on quality.</p>
+        </div>
+    </div>
+</div>
+
+<!-- FINDINGS -->
+<div style="background: white; padding: 60px 0;">
+<div class="section" id="findings" style="padding-top: 0;">
+    <div class="section-title">Example findings</div>
+    <div class="section-sub">Products confirmed identical via PL code — same factory, same formula</div>
+
+    <div class="finding">
+        <span class="badge">✅ 100% Identical — same PL code</span>
+        <div class="vs-row">
+            <div class="product">
+                <div class="name">Benylin Cold &amp; Flu Max Strength Capsules</div>
+                <div class="mfr">McNeil Products Ltd</div>
+                <div class="pl">PL 12063/0066</div>
+            </div>
+            <div><div class="vs-circle">VS</div></div>
+            <div class="product">
+                <div class="name">Boots Max Strength Cold &amp; Flu Relief Capsules</div>
+                <div class="mfr">THE BOOTS COMPANY PLC</div>
+                <div class="pl">PL 12063/0066</div>
+            </div>
+        </div>
+        <div class="evidence">Same PL code confirms these are the same product manufactured at the same facility with the same formula.</div>
+    </div>
+
+    <div class="finding">
+        <span class="badge">✅ 100% Identical — same PL code</span>
+        <div class="vs-row">
+            <div class="product">
+                <div class="name">Panadol Extra Advance 500mg/65mg Tablets (GSL)</div>
+                <div class="mfr">Haleon UK Trading Limited</div>
+                <div class="pl">PL 44673/0078</div>
+            </div>
+            <div><div class="vs-circle">VS</div></div>
+            <div class="product">
+                <div class="name">Panadol Period Pain 500mg/65mg Tablets</div>
+                <div class="mfr">Haleon UK Trading Limited</div>
+                <div class="pl">PL 44673/0078</div>
+            </div>
+        </div>
+        <div class="evidence">Same PL code — Haleon selling the identical tablet under two different names, marketed differently.</div>
+    </div>
+
+</div>
+</div>
+
+<!-- ABOUT -->
+<div class="about" id="about">
+    <h2>About Pillarity</h2>
+    <p>Pillarity was built to bring transparency to the UK medicines market. Using data from the Electronic Medicines Compendium — the same source used by NHS pharmacists — we compare the formulations of licensed medicines to identify when branded and own-brand products are genuinely identical.</p>
+    <p style="margin-top: 12px;">Pillarity is independent and has no affiliation with any pharmaceutical company or retailer.</p>
+    <p style="margin-top: 12px; font-size: 13px; opacity: 0.7;">Contact: hello@pillarity.co.uk</p>
+</div>
+
+<!-- PRIVACY -->
+<div class="privacy" id="privacy">
+    <h2>Privacy Policy</h2>
+    <p>Last updated: May 2026</p>
+
+    <h3>What data we collect</h3>
+    <p>Pillarity does not collect any personal data from visitors. We do not use cookies, tracking pixels, or analytics tools that identify individual users.</p>
+
+    <h3>Data sources</h3>
+    <p>All medicine formulation data displayed on this site is sourced from the Electronic Medicines Compendium (medicines.org.uk), which is publicly available regulatory information. Price data is sourced from publicly available retailer listings.</p>
+
+    <h3>Third party links</h3>
+    <p>This site may contain links to retailer websites. We are not responsible for the privacy practices of those sites.</p>
+
+    <h3>Contact</h3>
+    <p>For any privacy queries, contact us at hello@pillarity.co.uk</p>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    <p>© 2026 Pillarity. All medicine data sourced from the <a href="https://www.medicines.org.uk" target="_blank">Electronic Medicines Compendium (EMC)</a>. This site is for informational purposes only and does not constitute medical advice.</p>
+</div>
+
+</body>
+</html>
